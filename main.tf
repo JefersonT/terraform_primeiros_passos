@@ -27,6 +27,39 @@ resource "aws_instance" "dev" {
 
 }
 
+# o nome passado no parametro do resource é para referencia local no código.
+resource "aws_instance" "dev2" {
+    ami = "ami-04505e74c0741db8d" 
+    instance_type = "t2.micro" 
+    key_name = "terraform-aws" 
+
+    tags = {
+      Name = "dev2" 
+    }
+
+    vpc_security_group_ids = [ "${aws_security_group.access-ssh.id}" ]
+
+    # depends_on cria uma dependência entre o instância e o recurso referenciado
+    # assim o dev2 só executa após a execução do bucket
+    depends_on = [
+        aws_s3_bucket.dev2 # Referencia do recurso.nome
+    ]
+
+}
+
+resource "aws_instance" "dev3" {
+    ami = "ami-04505e74c0741db8d" 
+    instance_type = "t2.micro" 
+    key_name = "terraform-aws" 
+
+    tags = {
+      Name = "dev3" 
+    }
+
+    vpc_security_group_ids = [ "${aws_security_group.access-ssh.id}" ]
+
+}
+
 
 # Este recurso cria um novo grupo de acesso chamado "access-ssh"
 resource "aws_security_group" "access-ssh" {
@@ -48,7 +81,18 @@ resource "aws_security_group" "access-ssh" {
 
     # define um noma tag para a instãncia
     tags = {
-        name = "ssh"
+        Name = "ssh"
+    }
+  
+}
+
+# instanciando um bucket chamado
+# Bucket são multiregionais, não precisa definir região
+resource "aws_s3_bucket" "dev2" {
+    bucket = "primeirospassos-dev2" #Nome do bucket
+
+    tags = {
+      Name = "primeirospassos-dev2"
     }
   
 }

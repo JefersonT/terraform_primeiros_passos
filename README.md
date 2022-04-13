@@ -25,6 +25,7 @@ Terraform: automatize a infraestrutura na nuvem. Neste projeto é utilizado como
     - Criar no grupo de acesso com acesso **Administrador Full**.
     - Baixar e guardar o *arquivo.csv*.
 3. Configure o AWS CLI
+    - Acesso o Terminal.
     - Executar:
         ```
         $ aws configure
@@ -33,12 +34,34 @@ Terraform: automatize a infraestrutura na nuvem. Neste projeto é utilizado como
     - Defina a regial defaut de sua preferência.
     - Defina o output do arquivo como **json**.
 4. Criar chave ssh
+    - Acesso o Terminal.
     - Executa:
         ```
         $ ssh-keygen -f terraform-aws -t rsa
         ```
     - Guarde a chave privada em um lugar seguro.
     - Importe a chave publica para o AWS EC2.
+    - Caso crie a chave com um nome diferente é necessário alterar o valor no campo `key_name = "terraform-aws"` no arquivo *main.tf* para o nome que foi utilizado.
+### Executar o projeto
+1. Alterar o ip no campo `cidr_blocks = [ "191.7.221.142/32" ]` em `ingress [{}]` para o ip publico de sua máquina.
+2. Altere os valores dos campos `bucket = "primeirospassos-dev2"` e `Name = "primeirospassos-dev2"`, pois os mesmos devem ser únicos.
+3. Acesse o diretório do projeto apartir do terminal.
+4. Execute o seguinte comando para iniciar o ambiente e baixar as dependências:
+    ```
+    $ terraform init
+    ```
+5. Execute o seguinte comando para validar se o projeto está funcional:
+    ```
+    $ terraform plan
+    ```
+6. Execute o seguinte comando para aplicar os recursos ao AWS:
+    ```
+    $ terraform apply
+    ```
+7. Ao Finalizar os teste o seguinte comando para destroir tosos os recursos:
+    ```
+    $ terraform apply -destroy
+    ```
 
 
 
