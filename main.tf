@@ -11,7 +11,44 @@ resource "aws_instance" "dev" {
     instance_type = "t2.micro" # instance_type especifica qual modelo da máquina a ser usada, neste caso a t2.micro
     key_name = "terraform-aws" # Aqui será o nome da chave criada aneriormente e importada para o AWS EC2
 
+    # com o tags podemos nomear a instância
     tags = {
-      Name = "dev${count.index}"
+
+        # Por se tratar de vários dispositivos podemos 
+        # colocar uma referencia ao count para mudar o nome das instancias de acordo com a quantidade
+      Name = "dev${count.index}" 
     }
+
+    # vpc_security_group_ids defini qual security group a instância vai utiliza,
+    # caso não seja definido irá usar a vpc defaut da EC2
+        # A entrada pode ser uma string do id da security group 
+        # ou uma referencia do comando AWS CLI para identificar o id
+    vpc_security_group_ids = [ "${aws_security_group.access-ssh.id}" ] 
+
+}
+
+
+# Este recurso cria um novo grupo de acesso chamado "access-ssh"
+resource "aws_security_group" "access-ssh" {
+    name = "access-ssh" # Defini o nome do security group
+    description = "access-ssh" # Defini uma descrição para o security group
+
+    # o ingress defini o firewall de entrado da instãncia
+    ingress = [ {
+      cidr_blocks = [ "191.7.221.142/32" ] # Lista de ips com acessos permitidos
+      description = null # descirção da regra
+      from_port = 22 # porta que se aplica a regra
+      ipv6_cidr_blocks = []
+      prefix_list_ids = []
+      protocol = "tcp" # tipo de protocolo
+      security_groups = []
+      self = false
+      to_port = 22 # porta que se aplica a regra
+    } ]
+
+    # define um noma tag para a instãncia
+    tags = {
+        name = "ssh"
+    }
+  
 }
