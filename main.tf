@@ -57,7 +57,7 @@ resource "aws_instance" "dev2" {
 # Iremos usar o dev3 para associar ao novo provedor
 resource "aws_instance" "dev3" {
     provider = aws.us-east-2 # assim identificamos a qual provedor(região) atende
-    ami = "ami-03ededff12e34e59e" # vamos alterar para uma ami da amazon
+    ami = "ami-0c7478fd229861c57" # vamos alterar para uma ami da amazon
     instance_type = "t2.micro" 
     key_name = "terraform-aws" 
 
