@@ -72,6 +72,8 @@ Terraform: automatize a infraestrutura na nuvem. Neste projeto é utilizado como
     - Para este recurso funcionar corretamente é necessário importar novamente a chave publica criada anteriormente, porém logado no AWS utilizando a outra região a qual será criado os serviços. Sem esse procedimento o terraform não conseguirar estabelecer uma conexão com o provedor.
 - Criação de Banco de Dados:
     - Também podemos observar a utilização de um novo serviço o **dynamodb**, sendo configurado para ser a dependência da instancia *dev3*.
+- Criação de Variáveis
+    - Podemos criar variáves para referenciar na criação de recuros, facilitando na mudança dessas informações quando forem alteradas. Para manter as boas práticas separamos as variáveis em um arquivo *vars.rf*.
 
 
 

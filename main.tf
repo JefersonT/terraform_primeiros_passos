@@ -14,7 +14,7 @@ provider "aws" {
 # tipo de recurso "aws_instance" e um nome para ele "dev"
 resource "aws_instance" "dev" {
     count = 1 # o Count permite especificar quantas instandcias serão criadas com as mesmas configurações
-    ami = "ami-04505e74c0741db8d" # O Ami é a identificação da imagem a ser usada para criar a EC@
+    ami = var.amis["us-east-1"] # O Ami é a identificação da imagem a ser usada para criar a EC@
     instance_type = "t2.micro" # instance_type especifica qual modelo da máquina a ser usada, neste caso a t2.micro
     key_name = "terraform-aws" # Aqui será o nome da chave criada aneriormente e importada para o AWS EC2
 
@@ -36,7 +36,7 @@ resource "aws_instance" "dev" {
 
 # o nome passado no parametro do resource é para referencia local no código.
 resource "aws_instance" "dev2" {
-    ami = "ami-04505e74c0741db8d" 
+    ami = var.amis["us-east-1"] 
     instance_type = "t2.micro" 
     key_name = "terraform-aws" 
 
@@ -57,7 +57,9 @@ resource "aws_instance" "dev2" {
 # Iremos usar o dev3 para associar ao novo provedor
 resource "aws_instance" "dev3" {
     provider = aws.us-east-2 # assim identificamos a qual provedor(região) atende
-    ami = "ami-0c7478fd229861c57" # vamos alterar para uma ami da amazon
+
+    # aqui a ami foi substituida por variáveis, onde foram declaradas em um arquivo diferente
+    ami = var.amis["us-east-2"] # vamos alterar para uma ami da amazon
     instance_type = "t2.micro" 
     key_name = "terraform-aws" 
 
