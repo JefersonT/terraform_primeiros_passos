@@ -74,6 +74,15 @@ Terraform: automatize a infraestrutura na nuvem. Neste projeto é utilizado como
     - Também podemos observar a utilização de um novo serviço o **dynamodb**, sendo configurado para ser a dependência da instancia *dev3*.
 - Criação de Variáveis
     - Podemos criar variáves para referenciar na criação de recuros, facilitando na mudança dessas informações quando forem alteradas. Para manter as boas práticas separamos as variáveis em um arquivo *vars.rf*.
-
+- Formas de excluir recursos:
+    - Remover as linhas de códigos do recurso. Ao apagar as linhas onde declara um recurso, no momento do `$ terraform plan` ou `$ terraform apply`, o terraform identifica automaticamente que aqueles recursos devem ser destroidos. O mesmo vale para a ação de comentar o código.
+    - Um forma de remover o recurso sem mexer no código é através do seguinte comando, onde é especificado o recurso a ser destroido (desta forma também irá destroir os recursos que são dependentes do recurso destroido):
+        ```
+        $ terraform destroy -target tipo_do_resource.nome
+        ```
+    - Caso tenha terminado os estudos ou projeto e queira remover tudo para não continuar gastando os recursos, basta executar o seguinte comando:
+        ```
+        $ terraform destroy
+        ```
 
 
