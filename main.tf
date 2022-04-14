@@ -15,8 +15,8 @@ provider "aws" {
 resource "aws_instance" "dev" {
     count = 1 # o Count permite especificar quantas instandcias serão criadas com as mesmas configurações
     ami = var.amis["us-east-1"] # O Ami é a identificação da imagem a ser usada para criar a EC@
-    instance_type = "t2.micro" # instance_type especifica qual modelo da máquina a ser usada, neste caso a t2.micro
-    key_name = "terraform-aws" # Aqui será o nome da chave criada aneriormente e importada para o AWS EC2
+    instance_type = var.instance_type # instance_type especifica qual modelo da máquina a ser usada, neste caso a t2.micro que foi declarado na variável
+    key_name = var.key_name  # Aqui será o nome da chave criada aneriormente e importada para o AWS EC2 (akterada para a variável declarada com o nome da chave)
 
     # com o tags podemos nomear a instância
     tags = {
@@ -37,8 +37,8 @@ resource "aws_instance" "dev" {
 # o nome passado no parametro do resource é para referencia local no código.
 resource "aws_instance" "dev2" {
     ami = var.amis["us-east-1"] 
-    instance_type = "t2.micro" 
-    key_name = "terraform-aws" 
+    instance_type = var.instance_type
+    key_name = var.key_name 
 
     tags = {
       Name = "dev2" 
@@ -60,8 +60,8 @@ resource "aws_instance" "dev3" {
 
     # aqui a ami foi substituida por variáveis, onde foram declaradas em um arquivo diferente
     ami = var.amis["us-east-2"] # vamos alterar para uma ami da amazon
-    instance_type = "t2.micro" 
-    key_name = "terraform-aws" 
+    instance_type = var.instance_type # subistituido por uma variável
+    key_name = var.key_name # subistuindo o texto por uma variável declarada com a chave
 
     tags = {
       Name = "dev3" 

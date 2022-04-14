@@ -5,7 +5,8 @@ resource "aws_security_group" "access-ssh" {
 
     # o ingress defini o firewall de entrado da instãncia
     ingress = [ {
-      cidr_blocks = [ "191.7.221.142/32" ] # Lista de ips com acessos permitidos
+      # Para facilitar a atualização, vamos trabalhr com variáveis na lista de ips do cidr_block
+      cidr_blocks = var.cidr_acesso_remoto # Lista de ips com acessos permitidos
       description = null # descirção da regra
       from_port = 22 # porta que se aplica a regra
       ipv6_cidr_blocks = []
@@ -31,7 +32,7 @@ resource "aws_security_group" "access-ssh-us-east-2" {
 
 
     ingress = [ {
-      cidr_blocks = [ "191.7.221.142/32" ] 
+      cidr_blocks = var.cidr_acesso_remoto
       description = null
       from_port = 22
       ipv6_cidr_blocks = []
