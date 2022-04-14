@@ -84,5 +84,6 @@ Terraform: automatize a infraestrutura na nuvem. Neste projeto é utilizado como
         ```
         $ terraform destroy
         ```
-
+- Utilizando Output:
+    - Com o output podemos definir dados de saida ao executar um `$ terraform apply`, `$ terraform refresh` ou `$ terraform output`. Importante para receber alguns dados dos recursos no momento da criação. Para funcionar o recurso deve está em execução.
 

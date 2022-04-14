@@ -12,7 +12,7 @@ provider "aws" {
 
 # com o resource podemos iniciar qualquer recurso passado como parametro o 
 # tipo de recurso "aws_instance" e um nome para ele "dev"
-resource "aws_instance" "dev" {
+resource "aws_instance" "dev1" {
     count = 1 # o Count permite especificar quantas instandcias serão criadas com as mesmas configurações
     ami = var.amis["us-east-1"] # O Ami é a identificação da imagem a ser usada para criar a EC@
     instance_type = var.instance_type # instance_type especifica qual modelo da máquina a ser usada, neste caso a t2.micro que foi declarado na variável
