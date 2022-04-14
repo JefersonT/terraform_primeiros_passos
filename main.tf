@@ -1,6 +1,6 @@
 # com o provide definimos o provedor que será usado no projeto
 provider "aws" {
-  region = "us-east-1" # no caso do aws é necessário definir a regial 
+  region = "us-east-1" # no caso do aws é necessário definir a regial
 }
 
 # quando é necessário trabalhar com mais de uma região, primeiramente precisamos configurar um provider
