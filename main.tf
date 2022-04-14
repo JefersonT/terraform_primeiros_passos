@@ -1,6 +1,13 @@
 # com o provide definimos o provedor que será usado no projeto
 provider "aws" {
-    region = "us-east-1" # no caso do aws é necessário definir a regial 
+  region = "us-east-1" # no caso do aws é necessário definir a regial 
+}
+
+# quando é necessário trabalhar com mais de uma região, primeiramente precisamos configurar um provider
+# com a região em questão, diferenciando através de alias
+provider "aws" {
+  alias = "us-east-2"
+  region = "us-east-2"
 }
 
 # com o resource podemos iniciar qualquer recurso passado como parametro o 
@@ -47,8 +54,10 @@ resource "aws_instance" "dev2" {
 
 }
 
+# Iremos usar o dev3 para associar ao novo provedor
 resource "aws_instance" "dev3" {
-    ami = "ami-04505e74c0741db8d" 
+    provider = aws.us-east-2 # assim identificamos a qual provedor(região) atende
+    ami = "ami-03ededff12e34e59e" # vamos alterar para uma ami da amazon
     instance_type = "t2.micro" 
     key_name = "terraform-aws" 
 
@@ -56,35 +65,37 @@ resource "aws_instance" "dev3" {
       Name = "dev3" 
     }
 
-    vpc_security_group_ids = [ "${aws_security_group.access-ssh.id}" ]
+    # também sendo necessário atualizar o security group
+    vpc_security_group_ids = [ "${aws_security_group.access-ssh-us-east-2.id}" ]
+    # dependencia do banco
+    depends_on = [
+      aws_dynamodb_table.dynamodb_homologacao
+    ]
 
 }
 
+resource "aws_dynamodb_table" "dynamodb_homologacao" {
+  provider = aws.us-east-2
+  name = "Database-dev3"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key = "UserId"
+  range_key = "DatabaseTitle"
 
-# Este recurso cria um novo grupo de acesso chamado "access-ssh"
-resource "aws_security_group" "access-ssh" {
-    name = "access-ssh" # Defini o nome do security group
-    description = "access-ssh" # Defini uma descrição para o security group
-
-    # o ingress defini o firewall de entrado da instãncia
-    ingress = [ {
-      cidr_blocks = [ "191.7.221.142/32" ] # Lista de ips com acessos permitidos
-      description = null # descirção da regra
-      from_port = 22 # porta que se aplica a regra
-      ipv6_cidr_blocks = []
-      prefix_list_ids = []
-      protocol = "tcp" # tipo de protocolo
-      security_groups = []
-      self = false
-      to_port = 22 # porta que se aplica a regra
-    } ]
-
-    # define um noma tag para a instãncia
-    tags = {
-        Name = "ssh"
-    }
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
   
+  attribute {
+    name = "DatabaseTitle"
+    type = "S"
+  }
 }
+
+# OBS.:
+# resource "aws_security_group" "access-ssh" foi separado para um arquivo security-group.tf
+# Podemos separar nosso código entre arquivo.tf, desde que os arquivos estejam no formato .tf
+# o terrraform sempre identificará o que está dentro do arquivo, independente no seu nome.
 
 # instanciando um bucket chamado
 # Bucket são multiregionais, não precisa definir região

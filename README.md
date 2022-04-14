@@ -63,5 +63,11 @@ Terraform: automatize a infraestrutura na nuvem. Neste projeto é utilizado como
     $ terraform apply -destroy
     ```
 
+## Anotações
+- A partir da versão v1.1.0, estaremos trabalhando com muiltiplos arquivo **.tf**. Dessa forma podemos organizar a configuração da infraestrutura separando cada recurso em arquivos distintos. Exemplo: manter no *main.tf* as instancias principais e separando alguns recursos secundário como os *security group* em um arquivo separado.
+- Não há a necessidade de padronizar o nome do arquivo. O terraform já identifica tudo automaticamente, desde que os arquivos estejam todos com a extensão **.tf** e estejam na mesma estrutura de diretório.
+- A partir da versão v1.1.0 também vemos a utilização de mais de uma região. Esse recurso é proporcionado através da declaração de um segundo provedor aws, porém com um **alias** para identifica-lo e referencia-lo nos recursos que serão servidos por ele.
+- Também podemos observar a utilização de um novo serviço o **dynamodb**, sendo configurado para ser a dependência da instancia *dev3*.
+
 
 
